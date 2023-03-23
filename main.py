@@ -331,6 +331,7 @@ class MiVentana(QDialog):
             for column in range(1):
                 self.tablaResultado_2.setItem(column, row, QTableWidgetItem((str(vectorResultado[row]))))
 
+    #hola mundo cruel
 
 # if __name__ == "__main__":
 app = QApplication(sys.argv)
