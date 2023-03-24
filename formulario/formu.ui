@@ -59,6 +59,9 @@
     <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <attribute name="title">
      <string>a) Multiplicadores de la Lagrange</string>
     </attribute>

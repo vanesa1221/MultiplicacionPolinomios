@@ -9,7 +9,7 @@ qtCreatorFile = "formulario/formu.ui"  # Ingresa el archivo .ui
 
 class MiVentana(QDialog):
     def __init__(self):
-        super().__init__()
+        super().__init__()s
         uic.loadUi("formulario/formu.ui", self)
         # Aquí va el botón
 
@@ -26,6 +26,7 @@ class MiVentana(QDialog):
         # metodo bit reverso
         self.btnGenerarPol_4.clicked.connect(self.generarPol_3)
         self.btnMulPol_4.clicked.connect(self.multiplicarPold)
+
 
     # pasos multiplicadores de lagrange
     def generarPol_4(self):
