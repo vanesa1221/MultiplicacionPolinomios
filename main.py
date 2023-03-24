@@ -27,7 +27,6 @@ class MiVentana(QDialog):
         self.btnGenerarPol_4.clicked.connect(self.generarPol_3)
         self.btnMulPol_4.clicked.connect(self.multiplicarPold)
 
-
     # pasos multiplicadores de lagrange
     def generarPol_4(self):
         grado = int(self.txtGradoPol_3.text())
@@ -54,7 +53,7 @@ class MiVentana(QDialog):
                 else:
                     item = self.tablaPol_3.item(row, column)
                     b.append(int(item.text()))
-        #llamar funcion lagrange - c
+        # llamar funcion lagrange - c
         r = lagrange.multiply_poly(a, b)
         # MOSTRAR RESULTADO
         n = len(r)
