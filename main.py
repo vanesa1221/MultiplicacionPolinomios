@@ -9,7 +9,7 @@ qtCreatorFile = "formulario/formu.ui"  # Ingresa el archivo .ui
 
 class MiVentana(QDialog):
     def __init__(self):
-        super().__init__()s
+        super().__init__()
         uic.loadUi("formulario/formu.ui", self)
         # Aquí va el botón
 
@@ -61,7 +61,7 @@ class MiVentana(QDialog):
         self.tablaResultado_3.setRowCount(1)
         self.tablaResultado_3.setColumnCount(n)
         labelcolumna = []
-        print(n)
+
         for i in range(n):
             labelcolumna.append("x^" + str(i))
         self.tablaResultado_3.setHorizontalHeaderLabels(labelcolumna)
@@ -448,12 +448,12 @@ class MiVentana(QDialog):
         # Eliminar ceros finales
         while len(producto) > 1 and producto[-1] == 0:
             producto = producto[:-1]
-        print(producto)
+
         # MOSTRAR RESULTADO
         self.tablaResultado_4.setRowCount(1)
         self.tablaResultado_4.setColumnCount(n - 1)
         labelcolumna = []
-        print(n)
+
         for i in range(n - 1):
             labelcolumna.append("x^" + str(i))
         self.tablaResultado_4.setHorizontalHeaderLabels(labelcolumna)
