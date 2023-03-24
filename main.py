@@ -2,7 +2,7 @@ import sys
 import numpy as np
 from PyQt6.QtWidgets import QApplication, QDialog, QTableWidgetItem, QLabel, QTableWidget
 from PyQt6 import uic
-import Lagrange_c as lagrange
+import Lagrange_c as Lagrange
 
 qtCreatorFile = "formulario/formu.ui"  # Ingresa el archivo .ui
 
@@ -54,7 +54,7 @@ class MiVentana(QDialog):
                     item = self.tablaPol_3.item(row, column)
                     b.append(int(item.text()))
         # llamar funcion lagrange - c
-        r = lagrange.multiply_poly(a, b)
+        r = Lagrange.multiply_poly(a, b)
         # MOSTRAR RESULTADO
         n = len(r)
         self.tablaResultado_3.setRowCount(1)
