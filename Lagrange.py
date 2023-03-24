@@ -1,4 +1,6 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton
+import sys
+
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton
 import numpy as np
 
 
@@ -89,8 +91,8 @@ class MainWindow(QMainWindow):
         self.result_output.setText(' '.join([str(x) for x in result]))
 
 
-#if name == 'main':
-app = QApplication([])
+# if name == 'main':
+app = QApplication(sys.argv)
 window = MainWindow()
 window.show()
-app.exec_()
+app.exec()
