@@ -13,33 +13,51 @@ class MiVentana(QDialog):
         uic.loadUi("formulario/formu.ui", self)
         # Aquí va el botón
 
-        #Generar grid de acuerdo al grado de polinomio array de puros 0
+        # Generar grid de acuerdo al grado de polinomio array de puros 0
+        # multiplos de lagrange
+        self.btnGenerarPol_3.clicked.connect(self.generarPol_4)
+        # matriz real
         self.btnGenerarPol.clicked.connect(self.generarPol)
         self.btnMulPol.clicked.connect(self.multiplicarPolb)
-        #matriz imaginaria
+        # matriz imaginaria
         self.btnGenerarPol_2.clicked.connect(self.generarPol_2)
         self.btnMulPol_2.clicked.connect(self.multiplicarPolc)
-        #metodo bit reverso
+        # metodo bit reverso
         self.btnGenerarPol_4.clicked.connect(self.generarPol_3)
         self.btnMulPol_4.clicked.connect(self.multiplicarPold)
-    #generar grid del polinomio P(x)
+
+
+    # pasos multiplicadores de lagrange
+    def generarPol_4(self):
+        grado = int(self.txtGradoPol_3.text())
+        self.tablaPol_3.setRowCount(2)
+        self.tablaPol_3.setColumnCount(grado + 1)
+        labelcolumna = []
+        for grado in range(grado + 1):
+            labelcolumna.append("x^" + str(grado))
+        self.tablaPol_3.setHorizontalHeaderLabels(labelcolumna)
+        for column in range(grado + 1):
+            for row in range(grado + 1):
+                self.tablaPol_3.setItem(row, column, QTableWidgetItem("0"))
+
+    # generar grid del polinomio P(x)
     def generarPol(self):
         grado = int(self.txtGradoPol.text())
         self.tablaPol.setRowCount(2)
-        self.tablaPol.setColumnCount(grado+1)
+        self.tablaPol.setColumnCount(grado + 1)
         labelcolumna = []
-        for grado in range(grado+1):
+        for grado in range(grado + 1):
             labelcolumna.append("x^" + str(grado))
         self.tablaPol.setHorizontalHeaderLabels(labelcolumna)
-        for column in range(grado+1):
-            for row in range(grado+1):
+        for column in range(grado + 1):
+            for row in range(grado + 1):
                 self.tablaPol.setItem(row, column, QTableWidgetItem("0"))
 
     def multiplicarPolb(self):
         grado = int(self.txtGradoPol.text())
         a = []
         b = []
-        #agregar los valores a vectores a y b
+        # agregar los valores a vectores a y b
         for row in range(self.tablaPol.rowCount()):
             for column in range(self.tablaPol.columnCount()):
                 if row == 0:
@@ -48,28 +66,28 @@ class MiVentana(QDialog):
                 else:
                     item = self.tablaPol.item(row, column)
                     b.append(int(item.text()))
-        #completamos los vectores con 0
+        # completamos los vectores con 0
         for i in range(len(a)):
             a.append(0)
         for i in range(len(b)):
             b.append(0)
-        #mostrar ventores en punto1
+        # mostrar ventores en punto1
         vectorA = "a = ("
         vectorB = "b = ("
         for i in range(len(a)):
-            if i == len(a)-1:
+            if i == len(a) - 1:
                 vectorA += str(a[i]) + ")"
             else:
                 vectorA += str(a[i]) + ","
         for i in range(len(b)):
-            if i == len(b)-1:
+            if i == len(b) - 1:
                 vectorB += str(b[i]) + ")"
             else:
                 vectorB += str(b[i]) + ","
         self.lblVectorA.setText(str(vectorA))
         self.lblVectorB.setText(str(vectorB))
 
-        #Crear matriz Real
+        # Crear matriz Real
         n = len(a)
         matriz = []
         for i in range(n):
@@ -78,7 +96,7 @@ class MiVentana(QDialog):
                 fila.append(i ** j)
             matriz.append(fila)
 
-        #llenar matrizReal1 y 2
+        # llenar matrizReal1 y 2
         self.matrizReal1.setRowCount(len(matriz))
         self.matrizReal1.setColumnCount(len(matriz[0]))
         for row in range(len(matriz)):
@@ -90,7 +108,7 @@ class MiVentana(QDialog):
             for column in range(len(matriz[0])):
                 self.matrizReal1_2.setItem(row, column, QTableWidgetItem(str(matriz[row][column])))
 
-        #Llenar tabla de columnas A y B
+        # Llenar tabla de columnas A y B
         self.tablaVectorA.setRowCount(len(a))
         self.tablaVectorA.setColumnCount(1)
         for row in range(n):
@@ -102,11 +120,11 @@ class MiVentana(QDialog):
             for column in range(1):
                 self.tablaVectorB.setItem(row, column, QTableWidgetItem(str(b[row])))
 
-        #*************************
-        #multiplicar matriz con vectores
+        # *************************
+        # multiplicar matriz con vectores
         vecColMA = np.dot(matriz, a)
         vecColMB = np.dot(matriz, b)
-        #llenar tabla de columnas vecColMA y
+        # llenar tabla de columnas vecColMA y
         self.tablaVectorMA.setRowCount(len(vecColMA))
         self.tablaVectorMA.setColumnCount(1)
         for row in range(n):
@@ -118,7 +136,7 @@ class MiVentana(QDialog):
             for column in range(1):
                 self.tablaVectorMB.setItem(row, column, QTableWidgetItem(str(vecColMB[row])))
 
-        #llenar tabla de columnas vecColMA y vecColMB
+        # llenar tabla de columnas vecColMA y vecColMB
         self.tablaVectorMA_2.setRowCount(len(vecColMA))
         self.tablaVectorMA_2.setColumnCount(1)
         for row in range(n):
@@ -130,43 +148,43 @@ class MiVentana(QDialog):
             for column in range(1):
                 self.tablaVectorMB_2.setItem(row, column, QTableWidgetItem(str(vecColMB[row])))
 
-        #Calcular producto punto entre vecColMA y vecColMB
+        # Calcular producto punto entre vecColMA y vecColMB
         vProductoPunto = []
         for i in range(len(vecColMA)):
             vProductoPunto.append(vecColMA[i] * vecColMB[i])
-        #mostrar producto punto vecProductoPunto
+        # mostrar producto punto vecProductoPunto
         self.tablaProductoPunto.setRowCount(len(vecColMB))
         self.tablaProductoPunto.setColumnCount(1)
         for row in range(n):
             for column in range(1):
                 self.tablaProductoPunto.setItem(row, column, QTableWidgetItem(str(vProductoPunto[row])))
 
-        #*********************
-        #4) paso de interpolacion
-        #mostrar matriz de Vandermonde
+        # *********************
+        # 4) paso de interpolacion
+        # mostrar matriz de Vandermonde
         self.matrizReal1_3.setRowCount(len(matriz))
         self.matrizReal1_3.setColumnCount(len(matriz[0]))
         for row in range(len(matriz)):
             for column in range(len(matriz[0])):
                 self.matrizReal1_3.setItem(row, column, QTableWidgetItem(str(matriz[row][column])))
-        #mostrar resultado producto punto
+        # mostrar resultado producto punto
         self.tablaProductoPunto_2.setRowCount(len(vecColMB))
         self.tablaProductoPunto_2.setColumnCount(1)
         for row in range(n):
             for column in range(1):
                 self.tablaProductoPunto_2.setItem(row, column, QTableWidgetItem(str(vProductoPunto[row])))
 
-        #calcular la inversa de matriz de vandermonde * producto punto
+        # calcular la inversa de matriz de vandermonde * producto punto
         matrizInversa = np.linalg.inv(matriz)
         vectorResultado = np.dot(matrizInversa, vProductoPunto)
-        #mostrar resultado
+        # mostrar resultado
         self.TablaColResultado.setRowCount(len(vecColMB))
         self.TablaColResultado.setColumnCount(1)
         for row in range(n):
             for column in range(1):
                 self.TablaColResultado.setItem(row, column, QTableWidgetItem((str(round(vectorResultado[row], 2)))))
 
-        #MOSTRAR RESULTADO
+        # MOSTRAR RESULTADO
         self.tablaResultado.setRowCount(1)
         self.tablaResultado.setColumnCount(n)
         labelcolumna = []
@@ -403,14 +421,14 @@ class MiVentana(QDialog):
         print(producto)
         # MOSTRAR RESULTADO
         self.tablaResultado_4.setRowCount(1)
-        self.tablaResultado_4.setColumnCount(n-1)
+        self.tablaResultado_4.setColumnCount(n - 1)
         labelcolumna = []
         print(n)
-        for i in range(n-1):
+        for i in range(n - 1):
             labelcolumna.append("x^" + str(i))
         self.tablaResultado_4.setHorizontalHeaderLabels(labelcolumna)
 
-        for row in range(n-1):
+        for row in range(n - 1):
             for column in range(1):
                 self.tablaResultado_4.setItem(column, row, QTableWidgetItem(str(round(producto[row], 2))))
 
