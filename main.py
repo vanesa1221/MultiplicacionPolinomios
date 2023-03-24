@@ -2,6 +2,7 @@ import sys
 import numpy as np
 from PyQt6.QtWidgets import QApplication, QDialog, QTableWidgetItem, QLabel, QTableWidget
 from PyQt6 import uic
+import Lagrange_c as lagrange
 
 qtCreatorFile = "formulario/formu.ui"  # Ingresa el archivo .ui
 
@@ -15,6 +16,7 @@ class MiVentana(QDialog):
         # Generar grid de acuerdo al grado de polinomio array de puros 0
         # multiplos de lagrange
         self.btnGenerarPol_3.clicked.connect(self.generarPol_4)
+        self.btnMulPol_3.clicked.connect(self.multiplicarPola)
         # matriz real
         self.btnGenerarPol.clicked.connect(self.generarPol)
         self.btnMulPol.clicked.connect(self.multiplicarPolb)
@@ -38,6 +40,35 @@ class MiVentana(QDialog):
         for column in range(grado + 1):
             for row in range(grado + 1):
                 self.tablaPol_3.setItem(row, column, QTableWidgetItem("0"))
+
+    def multiplicarPola(self):
+        grado = int(self.txtGradoPol_3.text())
+        a = []
+        b = []
+        # agregar los valores a vectores a y b
+        for row in range(self.tablaPol_3.rowCount()):
+            for column in range(self.tablaPol_3.columnCount()):
+                if row == 0:
+                    item = self.tablaPol_3.item(row, column)
+                    a.append(int(item.text()))
+                else:
+                    item = self.tablaPol_3.item(row, column)
+                    b.append(int(item.text()))
+        #llamar funcion lagrange - c
+        r = lagrange.multiply_poly(a, b)
+        # MOSTRAR RESULTADO
+        n = len(r)
+        self.tablaResultado_3.setRowCount(1)
+        self.tablaResultado_3.setColumnCount(n)
+        labelcolumna = []
+        print(n)
+        for i in range(n):
+            labelcolumna.append("x^" + str(i))
+        self.tablaResultado_3.setHorizontalHeaderLabels(labelcolumna)
+
+        for row in range(n):
+            for column in range(1):
+                self.tablaResultado_3.setItem(column, row, QTableWidgetItem(str(round(r[row], 2))))
 
     # generar grid del polinomio P(x)
     def generarPol(self):
