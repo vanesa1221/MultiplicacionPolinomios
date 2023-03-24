@@ -19,6 +19,9 @@ class MiVentana(QDialog):
         #matriz imaginaria
         self.btnGenerarPol_2.clicked.connect(self.generarPol_2)
         self.btnMulPol_2.clicked.connect(self.multiplicarPolc)
+        #metodo bit reverso
+        self.btnGenerarPol_4.clicked.connect(self.generarPol_3)
+        self.btnMulPol_4.clicked.connect(self.multiplicarPold)
     #generar grid del polinomio P(x)
     def generarPol(self):
         grado = int(self.txtGradoPol.text())
@@ -318,7 +321,6 @@ class MiVentana(QDialog):
         self.TablaColResultado_3.setColumnCount(1)
         for row in range(n):
             for column in range(1):
-                #self.TablaColResultado_3.setItem(row, column, QTableWidgetItem((str(round(vectorResultado[row], 2)))))
                 self.TablaColResultado_3.setItem(row, column, QTableWidgetItem((str(vectorResultado[row]))))
         # MOSTRAR RESULTADO
         self.tablaResultado_2.setRowCount(1)
@@ -331,7 +333,87 @@ class MiVentana(QDialog):
             for column in range(1):
                 self.tablaResultado_2.setItem(column, row, QTableWidgetItem((str(vectorResultado[row]))))
 
-    #hola mundo cruel
+    ##### CON BIT REVERSE #####
+    # generar grid del polinomio P(x)
+    def generarPol_3(self):
+        grado = int(self.txtGradoPol_4.text())
+        self.tablaPol_4.setRowCount(2)
+        self.tablaPol_4.setColumnCount(grado + 1)
+        labelcolumna = []
+        for grado in range(grado + 1):
+            labelcolumna.append("x^" + str(grado))
+        self.tablaPol_4.setHorizontalHeaderLabels(labelcolumna)
+        for column in range(grado + 1):
+            for row in range(grado + 1):
+                self.tablaPol_4.setItem(row, column, QTableWidgetItem("0"))
+
+    def multiplicarPold(self):
+        grado = int(self.txtGradoPol_4.text())
+        a = []
+        b = []
+        # agregar los valores a vectores a y b
+        for row in range(self.tablaPol_4.rowCount()):
+            for column in range(self.tablaPol_4.columnCount()):
+                if row == 0:
+                    item = self.tablaPol_4.item(row, column)
+                    a.append(int(item.text()))
+                else:
+                    item = self.tablaPol_4.item(row, column)
+                    b.append(int(item.text()))
+        p = a
+        q = b
+        # completamos los vectores con 0
+        for i in range(len(a)):
+            a.append(0)
+        for i in range(len(b)):
+            b.append(0)
+        # mostrar ventores en punto1
+        vectorA = "a = ("
+        vectorB = "b = ("
+        for i in range(len(a)):
+            if i == len(a) - 1:
+                vectorA += str(a[i]) + ")"
+            else:
+                vectorA += str(a[i]) + ","
+        for i in range(len(b)):
+            if i == len(b) - 1:
+                vectorB += str(b[i]) + ")"
+            else:
+                vectorB += str(b[i]) + ","
+        self.lblVectorA_4.setText(str(vectorA))
+        self.lblVectorB_4.setText(str(vectorB))
+        # calcular la multiplicacion de polinomios
+        # Rellenar con ceros los polinomios
+        n = len(p) + len(q) - 1
+        p = np.pad(p, (0, n - len(p)))
+        q = np.pad(q, (0, n - len(q)))
+
+        # Calcule la FFT de los polinomios
+        fp = np.fft.fft(p)
+        fq = np.fft.fft(q)
+        # Multiplique las FFT por puntos
+        f = fp * fq
+
+        # Calcule la FFT inversa del producto
+        producto = np.fft.ifft(f).real
+
+        # Eliminar ceros finales
+        while len(producto) > 1 and producto[-1] == 0:
+            producto = producto[:-1]
+        print(producto)
+        # MOSTRAR RESULTADO
+        self.tablaResultado_4.setRowCount(1)
+        self.tablaResultado_4.setColumnCount(n-1)
+        labelcolumna = []
+        print(n)
+        for i in range(n-1):
+            labelcolumna.append("x^" + str(i))
+        self.tablaResultado_4.setHorizontalHeaderLabels(labelcolumna)
+
+        for row in range(n-1):
+            for column in range(1):
+                self.tablaResultado_4.setItem(column, row, QTableWidgetItem(str(round(producto[row], 2))))
+
 
 # if __name__ == "__main__":
 app = QApplication(sys.argv)
