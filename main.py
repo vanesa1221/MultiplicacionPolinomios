@@ -1,6 +1,5 @@
 import sys
 import numpy as np
-import cmath
 from PyQt6.QtWidgets import QApplication, QDialog, QTableWidgetItem, QLabel, QTableWidget
 from PyQt6 import uic
 
