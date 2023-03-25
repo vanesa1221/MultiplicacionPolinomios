@@ -362,7 +362,11 @@ class MiVentana(QDialog):
                 self.tablaProductoPunto_6.setItem(row, column, QTableWidgetItem(str(vProductoPunto[row])))
 
         # calcular la inversa de matriz de vandermonde * producto punto
-        matrizInversa = np.linalg.inv(matriz)
+        #matrizInversa = np.linalg.inv(matriz)
+        matrizInversa = np.zeros((n, n), dtype=complex)
+        for i in range(0, n):
+            for j in range(0, n):
+                matrizInversa[i][j] = (1 / matriz[i][j]) / n
         vectorResultado = np.dot(matrizInversa, vProductoPunto)
         # mostrar resultado
         self.TablaColResultado_3.setRowCount(len(vecColMB))
