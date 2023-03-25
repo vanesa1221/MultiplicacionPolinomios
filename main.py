@@ -277,6 +277,11 @@ class MiVentana(QDialog):
         w = 2*complex(self.txtW.text())
         n = len(a)
         matriz = np.vander(np.exp(w * np.pi * np.arange(n) / n), increasing=True)
+        #redondear matriz
+        for i in range(len(matriz)):
+            for j in range(len(matriz[0])):
+                matriz[i][j] = round(matriz[i][j].real, 1) + round(matriz[i][j].imag, 1) * 1j
+
         # matriz = []
         # for i in range(n):
         #     fila = []
@@ -340,6 +345,7 @@ class MiVentana(QDialog):
         vProductoPunto = []
         for i in range(len(vecColMA)):
             vProductoPunto.append(vecColMA[i] * vecColMB[i])
+
         # mostrar producto punto vecProductoPunto
         self.tablaProductoPunto_5.setRowCount(len(vecColMB))
         self.tablaProductoPunto_5.setColumnCount(1)
@@ -368,7 +374,11 @@ class MiVentana(QDialog):
         for i in range(0, n):
             for j in range(0, n):
                 matrizInversa[i][j] = (1 / matriz[i][j]) / n
+        print(matrizInversa)
         vectorResultado = np.dot(matrizInversa, vProductoPunto)
+        #redondear vector resultado
+        for i in range(len(vectorResultado)):
+            vectorResultado[i] = round(vectorResultado[i].real, 1) + round(vectorResultado[i].imag, 1) * 1j
         # mostrar resultado
         self.TablaColResultado_3.setRowCount(len(vecColMB))
         self.TablaColResultado_3.setColumnCount(1)
