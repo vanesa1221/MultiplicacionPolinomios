@@ -274,14 +274,15 @@ class MiVentana(QDialog):
         self.lblVectorB_2.setText(str(vectorB))
 
         # Crear matriz imaginaria
-        w = complex(self.txtW.text())
+        w = 2*complex(self.txtW.text())
         n = len(a)
-        matriz = []
-        for i in range(n):
-            fila = []
-            for j in range(n):
-                fila.append(w ** (i * j))
-            matriz.append(fila)
+        matriz = np.vander(np.exp(w * np.pi * np.arange(n) / n), increasing=True)
+        # matriz = []
+        # for i in range(n):
+        #     fila = []
+        #     for j in range(n):
+        #         fila.append(w ** (i * j))
+        #     matriz.append(fila)
 
         # llenar matrizImaginaria1 y 2
         self.matrizReal1_7.setRowCount(len(matriz))
