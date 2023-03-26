@@ -32,3 +32,5 @@ def multiply_poly(p, q):
     #   r_poly += r_coeffs[i] * L(i, xi, x)
 
     return r_coeffs  # r_coeffs[::-1]
+
+
