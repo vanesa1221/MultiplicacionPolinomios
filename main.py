@@ -50,9 +50,10 @@ class MiVentana(QDialog):
 
     def multiplicarPolinomios(self):
 
-        if(self.radioButton.isChecked() | self.radioButton_2.isChecked() | self.radioButton_3.isChecked() | self.radioButton_4.isChecked()):
+        if (
+                self.radioButton.isChecked() | self.radioButton_2.isChecked() | self.radioButton_3.isChecked() | self.radioButton_4.isChecked()):
 
-            #cargamos datos ne matriz
+            # cargamos datos ne matriz
             matrizPol = []
             for row in range(self.tablaPol_5.rowCount()):
                 fila = []
@@ -60,27 +61,28 @@ class MiVentana(QDialog):
                     item = self.tablaPol_5.item(row, column)
                     fila.append(int(item.text()))
                 matrizPol.append(fila)
-            #print(matrizPol)
+            # print(matrizPol)
             vectorProducto = matrizPol[0]
             for i in range(1, len(matrizPol)):
                 vectorProducto = Lagrange.multiply_poly(vectorProducto, matrizPol[i])
 
-            #print(vectorProducto)
+            # print(vectorProducto)
             # MOSTRAR RESULTADO
             n = len(vectorProducto)
-            #print(n)
+            # print(n)
             self.tablaResultado_5.setRowCount(1)
             self.tablaResultado_5.setColumnCount(n)
             labelcolumna = []
             for i in range(n):
                 labelcolumna.append("x^" + str(i))
             self.tablaResultado_5.setHorizontalHeaderLabels(labelcolumna)
-            #print(labelcolumna)
+            # print(labelcolumna)
             for row in range(n):
                 for column in range(1):
                     self.tablaResultado_5.setItem(column, row, QTableWidgetItem(str(vectorProducto[row])))
         else:
             QMessageBox.about(self, "ERROR...!", "Seleccione un método")
+
     def generarPol_4(self):
         grado = int(self.txtGradoPol_3.text())
         self.tablaPol_3.setRowCount(2)
@@ -264,7 +266,7 @@ class MiVentana(QDialog):
         self.TablaColResultado.setColumnCount(1)
         for row in range(n):
             for column in range(1):
-                self.TablaColResultado.setItem(row, column, QTableWidgetItem((str(round(vectorResultado[row], 0)))))
+                self.TablaColResultado.setItem(row, column, QTableWidgetItem((str(round(vectorResultado[row], 2)))))
 
         # MOSTRAR RESULTADO
         self.tablaResultado.setRowCount(1)
@@ -275,7 +277,7 @@ class MiVentana(QDialog):
         self.tablaResultado.setHorizontalHeaderLabels(labelcolumna)
         for row in range(n):
             for column in range(1):
-                self.tablaResultado.setItem(column, row, QTableWidgetItem((str(int(vectorResultado[row])))))
+                self.tablaResultado.setItem(column, row, QTableWidgetItem((str(int(round(vectorResultado[row], 1))))))
 
     ##### con MATRIZ IMAGINARIA
     # generar grid del polinomio P(x)
@@ -292,7 +294,7 @@ class MiVentana(QDialog):
                 self.tablaPol_2.setItem(row, column, QTableWidgetItem("0"))
 
     def multiplicarPolc(self):
-        if(self.txtW.text() == ""):
+        if (self.txtW.text() == ""):
             QMessageBox.about(self, "ERROR..!", "Ingrese un valor para W")
         else:
             grado = int(self.txtGradoPol_2.text())
@@ -335,7 +337,7 @@ class MiVentana(QDialog):
             # redondear matriz
             for i in range(len(matriz)):
                 for j in range(len(matriz[0])):
-                    matriz[i][j] = round(matriz[i][j].real, 2) + round(matriz[i][j].imag, 2) * 1j
+                    matriz[i][j] = round(matriz[i][j].real, 3) + round(matriz[i][j].imag, 3) * 1j
 
             # matriz = []
             # for i in range(n):
@@ -429,7 +431,7 @@ class MiVentana(QDialog):
             for i in range(0, n):
                 for j in range(0, n):
                     matrizInversa[i][j] = (1 / matriz[i][j]) / n
-            #print(matrizInversa)
+            # print(matrizInversa)
             vectorResultado = np.dot(matrizInversa, vProductoPunto)
             # redondear vector resultado
             for i in range(len(vectorResultado)):
@@ -530,7 +532,8 @@ class MiVentana(QDialog):
 
         for row in range(n - 1):
             for column in range(1):
-                self.tablaResultado_4.setItem(column, row, QTableWidgetItem(str(int(producto[row]))))
+                self.tablaResultado_4.setItem(column, row, QTableWidgetItem(str(int(round(producto[row], 1)))))
+        print(producto)
 
 
 # if __name__ == "__main__":
