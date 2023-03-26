@@ -26,9 +26,57 @@ class MiVentana(QDialog):
         # metodo bit reverso
         self.btnGenerarPol_4.clicked.connect(self.generarPol_3)
         self.btnMulPol_4.clicked.connect(self.multiplicarPold)
+        # Mayor a 2 polinomios
+        self.btnGenerarPol_5.clicked.connect(self.generarPol_5)
+        self.btnMulPol_5.clicked.connect(self.multiplicarPolinomios)
 
+    # Generar grid para >2 polinomios y preguntar mayor grado
+    def generarPol_5(self):
+        grado = int(self.txtGradoPol_5.text())
+        nroPol = int(self.txtNroPol.text())
+        self.tablaPol_5.setRowCount(nroPol)
+        self.tablaPol_5.setColumnCount(grado + 1)
+        labelcolumna = []
+        for grado in range(grado + 1):
+            labelcolumna.append("x^" + str(grado))
+        self.tablaPol_5.setHorizontalHeaderLabels(labelcolumna)
+        labelfila = []
+        for i in range(1, nroPol + 1):
+            labelfila.append("P" + str(i) + "(x)")
+        self.tablaPol_5.setVerticalHeaderLabels(labelfila)
+        for column in range(grado + 1):
+            for row in range(nroPol):
+                self.tablaPol_5.setItem(row, column, QTableWidgetItem("0"))
 
-    # pasos multiplicadores de lagrange
+    def multiplicarPolinomios(self):
+        #cargamos datos ne matriz
+        matrizPol = []
+        for row in range(self.tablaPol_5.rowCount()):
+            fila = []
+            for column in range(self.tablaPol_5.columnCount()):
+                item = self.tablaPol_5.item(row, column)
+                fila.append(int(item.text()))
+            matrizPol.append(fila)
+        print(matrizPol)
+        # pasos multiplicadores de lagrange
+        vectorProducto = matrizPol[0]
+        for i in range(1, len(matrizPol)):
+            vectorProducto = Lagrange.multiply_poly(vectorProducto, matrizPol[i])
+        print(vectorProducto)
+        # MOSTRAR RESULTADO
+        n = len(vectorProducto)
+        print(n)
+        self.tablaResultado_5.setRowCount(1)
+        self.tablaResultado_5.setColumnCount(n)
+        labelcolumna = []
+        for i in range(n):
+            labelcolumna.append("x^" + str(i))
+        self.tablaResultado_5.setHorizontalHeaderLabels(labelcolumna)
+        print(labelcolumna)
+        for row in range(n):
+            for column in range(1):
+                self.tablaResultado_5.setItem(column, row, QTableWidgetItem(str(round(vectorProducto[row], 2))))
+
     def generarPol_4(self):
         grado = int(self.txtGradoPol_3.text())
         self.tablaPol_3.setRowCount(2)
@@ -274,10 +322,10 @@ class MiVentana(QDialog):
         self.lblVectorB_2.setText(str(vectorB))
 
         # Crear matriz imaginaria
-        w = 2*complex(self.txtW.text())
+        w = 2 * complex(self.txtW.text())
         n = len(a)
         matriz = np.vander(np.exp(w * np.pi * np.arange(n) / n), increasing=True)
-        #redondear matriz
+        # redondear matriz
         for i in range(len(matriz)):
             for j in range(len(matriz[0])):
                 matriz[i][j] = round(matriz[i][j].real, 1) + round(matriz[i][j].imag, 1) * 1j
@@ -369,14 +417,14 @@ class MiVentana(QDialog):
                 self.tablaProductoPunto_6.setItem(row, column, QTableWidgetItem(str(vProductoPunto[row])))
 
         # calcular la inversa de matriz de vandermonde * producto punto
-        #matrizInversa = np.linalg.inv(matriz)
+        # matrizInversa = np.linalg.inv(matriz)
         matrizInversa = np.zeros((n, n), dtype=complex)
         for i in range(0, n):
             for j in range(0, n):
                 matrizInversa[i][j] = (1 / matriz[i][j]) / n
         print(matrizInversa)
         vectorResultado = np.dot(matrizInversa, vProductoPunto)
-        #redondear vector resultado
+        # redondear vector resultado
         for i in range(len(vectorResultado)):
             vectorResultado[i] = round(vectorResultado[i].real, 1) + round(vectorResultado[i].imag, 1) * 1j
         # mostrar resultado
